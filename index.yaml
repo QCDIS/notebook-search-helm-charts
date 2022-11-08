@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  notebook-search-helm-charts:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-11-08T19:15:56.214407457+01:00"
+    description: A Helm chart for Kubernetes
+    digest: adbef147ec41c3f3d401aa9a3670a5ed21d0518685649ff04711b83b2dc2c6a9
+    name: notebook-search-helm-charts
+    type: application
+    urls:
+    - https://qcdis.github.io/carsharing-helm-charts/notebook-search-helm-charts-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-11-08T19:15:56.210010991+01:00"
