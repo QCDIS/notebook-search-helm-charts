@@ -3,8 +3,9 @@
 # Declare variables to be passed into your templates.
 postgresql:
   auth:
-    username: postgres
+    username: notebooksearch
     database: notebooksearch
+    password: notebooksearch2022
 
 search_engine_app:
   replicaCount: 1
