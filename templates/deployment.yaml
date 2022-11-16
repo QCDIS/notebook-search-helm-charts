@@ -47,57 +47,6 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.search_engine_app.resources | nindent 12 }}
-          env:
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-postgresql
-                  key: postgres-password
-            - name: HOST_IP
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: HOST_IP
-            - name: ELASTICSEARCH_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: ELASTICSEARCH_HOSTNAME
-            - name: ELASTICSEARCH_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: ELASTICSEARCH_PORT
-            - name: ELASTICSEARCH_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: ELASTICSEARCH_USERNAME
-            - name: ELASTICSEARCH_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: ELASTICSEARCH_PASSWORD
-            - name: POSTGRES_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: POSTGRES_HOSTNAME
-            - name: POSTGRES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: POSTGRES_PORT
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: POSTGRES_USER
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: POSTGRES_DB
 
 
       {{- with .Values.search_engine_app.nodeSelector }}

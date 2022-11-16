@@ -2,13 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-global:
-  postgresql:
-    auth:
-      username: "postgres"
-      database: "notebooksearch"
-
-
 search_engine_app:
   replicaCount: 1
 
