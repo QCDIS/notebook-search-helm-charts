@@ -1,12 +1,16 @@
 # Default values for ..
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+postgresql:
+  auth:
+    username: postgres
+    database: notebooksearch
 
 search_engine_app:
   replicaCount: 1
 
   image:
-    repository: qcdis/search_engine_app
+    repository: qcdis/search-engine-app
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "v0.2"
