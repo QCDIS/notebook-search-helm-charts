@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "..fullname" . }}
+  name: {{ include "..fullname" . }}-search_engine_app
   labels:
     {{- include "..labels" . | nindent 4 }}
+    app: {{ include "..fullname" . }}-search_engine_app
 spec:
   {{- if not .Values.search_engine_app.autoscaling.enabled }}
   replicas: {{ .Values.search_engine_app.replicaCount }}
@@ -11,6 +12,7 @@ spec:
   selector:
     matchLabels:
       {{- include "..selectorLabels" . | nindent 6 }}
+      app: {{ include "..fullname" . }}-search_engine_app
   template:
     metadata:
       {{- with .Values.search_engine_app.podAnnotations }}
@@ -19,88 +21,65 @@ spec:
       {{- end }}
       labels:
         {{- include "..selectorLabels" . | nindent 8 }}
+        app: {{ include "..fullname" . }}-search_engine_app
     spec:
-      {{- with .Values.search_engine_app.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "..serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.search_engine_app.podSecurityContext | nindent 8 }}
+      restartPolicy: Always
       containers:
         - env:
-            - name: POSTGRES_PASSWORD
+            - name: HOST_IP
               valueFrom:
-                secretKeyRef:
-                name: { { .Release.Name } }-postgresql
-                key: postgres-password
+                configMapKeyRef:
+                  key: HOST_IP
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_HOSTNAME
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_PORT
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_USERNAME
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_PASSWORD
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOSTNAME
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: {{ include "..fullname" . }}-config
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef:
-                  key: NODE_ENV
-                  name: { { include "..fullname" . } }-config
-            - name: ELASTICSEARCH_HOSTNAME
-            valueFrom:
-              configMapKeyRef:
-                key: ELASTICSEARCH_HOSTNAME
-                name: { { include "..fullname" . } }-config
-            - name: ELASTICSEARCH_PORT
-            valueFrom:
-              configMapKeyRef:
-                key: ELASTICSEARCH_PORT
-                name: { { include "..fullname" . } }-config
-            - name: ELASTICSEARCH_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                key: ELASTICSEARCH_USERNAME
-                name: { { include "..fullname" . } }-config
-            - name: ELASTICSEARCH_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                key: ELASTICSEARCH_PASSWORD
-                name: { { include "..fullname" . } }-config
-            - name: POSTGRES_HOSTNAME
-            valueFrom:
-              configMapKeyRef:
-                key: POSTGRES_HOSTNAME
-                name: { { include "..fullname" . } }-config
-            - name: POSTGRES_PORT
-            valueFrom:
-              configMapKeyRef:
-                key: POSTGRES_PORT
-                name: { { include "..fullname" . } }-config
-            - name: POSTGRES_USER
-            valueFrom:
-              configMapKeyRef:
-                key: POSTGRES_USER
-                name: { { include "..fullname" . } }-config
-            - name: POSTGRES_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                key: POSTGRES_PASSWORD
-                name: { { include "..fullname" . } }-config
+                  key: POSTGRES_USER
+                  name: {{ include "..fullname" . }}-config
             - name: POSTGRES_DB
-            valueFrom:
-              configMapKeyRef:
-                key: POSTGRES_DB
-                name: { { include "..fullname" . } }-config
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: {{ include "..fullname" . }}-config
+
+
           image: "{{ .Values.search_engine_app.image.repository }}:{{ .Values.search_engine_app.image.tag | default .Chart.AppVersion }}"
-        - name: {{ .Chart.Name }}-search_engine_app
-          imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
+          name: {{ .Chart.Name }}-search_engine_app
           ports:
             - name: http
-              containerPort: 7777
+              containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.search_engine_app.resources | nindent 12 }}
+
       {{- with .Values.search_engine_app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
