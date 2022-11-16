@@ -5,8 +5,8 @@
 global:
   postgresql:
     auth:
-      username: postgres
-      database: notebooksearch
+      username: "postgres"
+      database: "notebooksearch"
 
 
 search_engine_app:
