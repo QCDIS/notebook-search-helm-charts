@@ -7,11 +7,3 @@ metadata:
 
 data:
   HOST_IP : "127.0.0.0"
-#  ELASTICSEARCH_HOSTNAME : {{ .Release.Name }}-elasticsearch-master-hl
-#  ELASTICSEARCH_PORT : "9200"
-#  ELASTICSEARCH_USERNAME : "elastic"
-#  ELASTICSEARCH_PASSWORD : "changeme"
-#  POSTGRES_HOSTNAME : {{ .Release.Name }}-postgresql-hl
-#  POSTGRES_PORT : "5432"
-#  POSTGRES_USER : {{ .Values.global.postgresql.auth.username | quote }}
-#  POSTGRES_DB : {{ .Values.global.postgresql.auth.database | quote }}
