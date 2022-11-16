@@ -97,7 +97,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-postgresql
-                  key: POSTGRES_DB
+                  key: postgres-password
 
 
       {{- with .Values.search_engine_app.nodeSelector }}
