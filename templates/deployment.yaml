@@ -5,34 +5,34 @@ metadata:
   labels:
     {{- include "..labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.search_engine_app.autoscaling.enabled }}
-  replicas: {{ .Values.search_engine_app.replicaCount }}
+  {{- if not .Values.searchengineapp.autoscaling.enabled }}
+  replicas: {{ .Values.searchengineapp.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "..selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.search_engine_app.podAnnotations }}
+      {{- with .Values.searchengineapp.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "..selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.search_engine_app.imagePullSecrets }}
+      {{- with .Values.searchengineapp.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "..serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.search_engine_app.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.searchengineapp.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.search_engine_app.securityContext | nindent 12 }}
-          image: "{{ .Values.search_engine_app.image.repository }}:{{ .Values.search_engine_app.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
+            {{- toYaml .Values.searchengineapp.securityContext | nindent 12 }}
+          image: "{{ .Values.searchengineapp.image.repository }}:{{ .Values.searchengineapp.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.searchengineapp.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 80
@@ -46,7 +46,7 @@ spec:
               path: /
               port: http
           resources:
-            {{- toYaml .Values.search_engine_app.resources | nindent 12 }}
+            {{- toYaml .Values.searchengineapp.resources | nindent 12 }}
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -105,15 +105,15 @@ spec:
                   key: POSTGRES_DB
 
 
-      {{- with .Values.search_engine_app.nodeSelector }}
+      {{- with .Values.searchengineapp.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.search_engine_app.affinity }}
+      {{- with .Values.searchengineapp.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.search_engine_app.tolerations }}
+      {{- with .Values.searchengineapp.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
