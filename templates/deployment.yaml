@@ -5,37 +5,94 @@ metadata:
   labels:
     {{- include "..labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.search_engine_app.autoscaling.enabled }}
+  replicas: {{ .Values.search_engine_app.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "..selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with .Values.search_engine_app.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "..selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.search_engine_app.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "..serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.search_engine_app.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .Values.search_engine_app.securityContext | nindent 12 }}
+          image: "{{ .Values.search_engine_app.image.repository }}:{{ .Values.search_engine_app.image.tag | default .Chart.AppVersion }}"
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                name: {{ .Release.Name }}-postgresql
+                key: postgres-password
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: NODE_ENV
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_HOSTNAME
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_PORT
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_USERNAME
+                  name: {{ include "..fullname" . }}-config
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: ELASTICSEARCH_PASSWORD
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOSTNAME
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: {{ include "..fullname" . }}-config
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: {{ include "..fullname" . }}-config
+
+          imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 7777
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -46,16 +103,16 @@ spec:
               path: /
               port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .Values.search_engine_app.resources | nindent 12 }}
+      {{- with .Values.search_engine_app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.search_engine_app.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.search_engine_app.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
