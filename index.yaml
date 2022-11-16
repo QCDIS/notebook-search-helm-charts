@@ -1,90 +1,14 @@
 apiVersion: v1
 entries:
-  elasticsearch:
-  - annotations:
-      category: Analytics
-    apiVersion: v2
-    appVersion: 8.5.0
-    created: "2022-11-16T22:40:29.901567133+01:00"
-    dependencies:
-    - condition: global.kibanaEnabled
-      name: kibana
-      repository: https://charts.bitnami.com/bitnami
-      version: 10.x.x
-    - name: common
-      repository: https://charts.bitnami.com/bitnami
-      tags:
-      - bitnami-common
-      version: 2.x.x
-    description: Elasticsearch is a distributed search and analytics engine. It is
-      used for web search, log monitoring, and real-time analytics. Ideal for Big
-      Data applications.
-    digest: 99918b3f1d8b96420af90747a1e8b6b7d1bff0c080615a38dcf40dc5ab6e87f2
-    home: https://github.com/bitnami/charts/tree/main/bitnami/elasticsearch
-    icon: https://bitnami.com/assets/stacks/elasticsearch/img/elasticsearch-stack-220x234.png
-    keywords:
-    - elasticsearch
-    maintainers:
-    - name: Bitnami
-      url: https://github.com/bitnami/charts
-    name: elasticsearch
-    sources:
-    - https://github.com/bitnami/containers/tree/main/bitnami/elasticsearch
-    - https://www.elastic.co/products/elasticsearch
-    urls:
-    - https://qcdis.github.io/notebook-search-helm-charts/charts/elasticsearch-19.5.0.tgz
-    version: 19.5.0
   notebook-search-helm-charts:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-16T22:40:29.892616271+01:00"
-    dependencies:
-    - name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 12.1.0
-    - name: elasticsearch
-      repository: https://charts.bitnami.com/bitnami
-      version: 19.5.0
+    created: "2022-11-16T22:51:16.616923581+01:00"
     description: A Helm chart for Kubernetes
-    digest: 06a29b97fdad03cb1ece108fe58ce9fab77c5a47853aa65ccf72148a57d7c27c
+    digest: e3e2d846c4754eef800e0ab20b5cf07d86be0b1c994cb1feda66c84984555280
     name: notebook-search-helm-charts
     type: application
     urls:
     - https://qcdis.github.io/notebook-search-helm-charts/notebook-search-helm-charts-0.1.0.tgz
     version: 0.1.0
-  postgresql:
-  - annotations:
-      category: Database
-    apiVersion: v2
-    appVersion: 15.0.0
-    created: "2022-11-16T22:40:29.908116006+01:00"
-    dependencies:
-    - name: common
-      repository: https://charts.bitnami.com/bitnami
-      tags:
-      - bitnami-common
-      version: 2.x.x
-    description: PostgreSQL (Postgres) is an open source object-relational database
-      known for reliability and data integrity. ACID-compliant, it supports foreign
-      keys, joins, views, triggers and stored procedures.
-    digest: 911efc0cd1a49b47153d8884e0de9ae81896d31f2ae37bdf7861aa8cc208289f
-    home: https://github.com/bitnami/charts/tree/main/bitnami/postgresql
-    icon: https://bitnami.com/assets/stacks/postgresql/img/postgresql-stack-220x234.png
-    keywords:
-    - postgresql
-    - postgres
-    - database
-    - sql
-    - replication
-    - cluster
-    maintainers:
-    - name: Bitnami
-      url: https://github.com/bitnami/charts
-    name: postgresql
-    sources:
-    - https://github.com/bitnami/containers/tree/main/bitnami/postgresql
-    - https://www.postgresql.org/
-    urls:
-    - https://qcdis.github.io/notebook-search-helm-charts/charts/postgresql-12.1.0.tgz
-    version: 12.1.0
-generated: "2022-11-16T22:40:29.860818859+01:00"
+generated: "2022-11-16T22:51:16.608576007+01:00"
