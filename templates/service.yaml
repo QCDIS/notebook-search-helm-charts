@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "..labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.searchengineapp.service.type }}
+  type: {{ .Values.search_engine_app.service.type }}
   ports:
-    - port: {{ .Values.searchengineapp.service.port }}
+    - port: {{ .Values.search_engine_app.service.port }}
       targetPort: http
       protocol: TCP
       name: http

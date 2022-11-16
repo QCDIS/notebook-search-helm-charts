@@ -9,11 +9,11 @@ global:
       database: "notebooksearch"
 
 
-searchengineapp:
+search_engine_app:
   replicaCount: 1
 
   image:
-    repository: qcdis/searchengineapp
+    repository: qcdis/search_engine_app
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: "v0.2"

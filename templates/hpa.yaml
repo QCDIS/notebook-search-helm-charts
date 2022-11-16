@@ -1,4 +1,4 @@
-{{- if .Values.searchengineapp.autoscaling.enabled }}
+{{- if .Values.search_engine_app.autoscaling.enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -10,19 +10,19 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "..fullname" . }}
-  minReplicas: {{ .Values.searchengineapp.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.searchengineapp.autoscaling.maxReplicas }}
+  minReplicas: {{ .Values.search_engine_app.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.search_engine_app.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.searchengineapp.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.search_engine_app.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.searchengineapp.autoscaling.targetCPUUtilizationPercentage }}
+        targetAverageUtilization: {{ .Values.search_engine_app.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.searchengineapp.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.search_engine_app.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.searchengineapp.autoscaling.targetMemoryUtilizationPercentage }}
+        targetAverageUtilization: {{ .Values.search_engine_app.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}
