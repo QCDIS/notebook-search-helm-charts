@@ -13,5 +13,5 @@ data:
   ELASTICSEARCH_PASSWORD : "changeme"
   POSTGRES_HOSTNAME : {{  .Release.Name }}-postgresql-hl
   POSTGRES_PORT : "5432"
-  POSTGRES_USER : { { .Values.global.postgresql.auth.username } }
-  POSTGRES_DB : { { .Values.global.postgresql.auth.database } }
+  POSTGRES_USER : {{ .Values.global.postgresql.auth.username }}
+  POSTGRES_DB : {{ .Values.global.postgresql.auth.database }}

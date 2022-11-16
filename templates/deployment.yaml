@@ -6,14 +6,14 @@ metadata:
     {{- include "..labels" . | nindent 4 }}
 spec:
   {{- if not .Values.search_engine_app.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.search_engine_app.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "..selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with .Values.search_engine_app.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -26,11 +26,11 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "..serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.search_engine_app.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.search_engine_app.securityContext | nindent 12 }}
           image: "{{ .Values.search_engine_app.image.repository }}:{{ .Values.search_engine_app.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
           ports:
@@ -39,23 +39,81 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: "{{ .Values.search_engine_app.service.test_path }}"
+              path: /
               port: http
           readinessProbe:
             httpGet:
-              path: "{{ .Values.search_engine_app.service.test_path }}"
+              path: /
               port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .Values.search_engine_app.resources | nindent 12 }}
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: postgres-password
+            - name: HOST_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: HOST_IP
+            - name: ELASTICSEARCH_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_HOSTNAME
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_PORT
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_USERNAME
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_PASSWORD
+            - name: POSTGRES_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_HOSTNAME
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_PORT
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_DB
+
+
+      {{- with .Values.search_engine_app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.search_engine_app.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.search_engine_app.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
