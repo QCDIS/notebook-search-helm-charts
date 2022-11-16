@@ -3,12 +3,12 @@ entries:
   notebook-search-helm-charts:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-16T23:54:52.81014177+01:00"
+    created: "2022-11-16T23:56:10.923898566+01:00"
     description: A Helm chart for Kubernetes
-    digest: 6a57ad60b5e65a566b91d3d108d37da29f128eaf112435448c1039d8d6385add
+    digest: 4f0f87feb4b2b4c58f9f1c4e1e7561c7c11fccdd45f602e0fb5ff8c526e2c614
     name: notebook-search-helm-charts
     type: application
     urls:
     - https://qcdis.github.io/notebook-search-helm-charts/notebook-search-helm-charts-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-16T23:54:52.802799754+01:00"
+generated: "2022-11-16T23:56:10.915949605+01:00"
