@@ -5,7 +5,7 @@ entries:
       category: Analytics
     apiVersion: v2
     appVersion: 8.5.0
-    created: "2022-11-16T22:17:06.635147958+01:00"
+    created: "2022-11-16T22:39:14.383936488+01:00"
     dependencies:
     - condition: global.kibanaEnabled
       name: kibana
@@ -37,7 +37,7 @@ entries:
   notebook-search-helm-charts:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-16T22:17:06.627671401+01:00"
+    created: "2022-11-16T22:39:14.370194604+01:00"
     dependencies:
     - name: postgresql
       repository: https://charts.bitnami.com/bitnami
@@ -46,7 +46,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 19.5.0
     description: A Helm chart for Kubernetes
-    digest: 12447cadd734f2590f1870fa65f91a6bee2b2fe86afbb00a8581a796f75778ce
+    digest: b38bb23ffa1fa19d5a680a6a51288ee18ca057c89df1a4bad6d6cef4f401a253
     name: notebook-search-helm-charts
     type: application
     urls:
@@ -57,7 +57,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 15.0.0
-    created: "2022-11-16T22:17:06.640059214+01:00"
+    created: "2022-11-16T22:39:14.387765598+01:00"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -87,4 +87,4 @@ entries:
     urls:
     - https://qcdis.github.io/notebook-search-helm-charts/charts/postgresql-12.1.0.tgz
     version: 12.1.0
-generated: "2022-11-16T22:17:06.604239878+01:00"
+generated: "2022-11-16T22:39:14.342999338+01:00"
