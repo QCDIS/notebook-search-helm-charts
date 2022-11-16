@@ -1,94 +1,61 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "..fullname" . }}-search_engine_app
+  name: {{ include "..fullname" . }}
   labels:
     {{- include "..labels" . | nindent 4 }}
-    app: {{ include "..fullname" . }}-search_engine_app
 spec:
   {{- if not .Values.search_engine_app.autoscaling.enabled }}
-  replicas: {{ .Values.search_engine_app.replicaCount }}
+  replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "..selectorLabels" . | nindent 6 }}
-      app: {{ include "..fullname" . }}-search_engine_app
   template:
     metadata:
-      {{- with .Values.search_engine_app.podAnnotations }}
+      {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "..selectorLabels" . | nindent 8 }}
-        app: {{ include "..fullname" . }}-search_engine_app
     spec:
-      restartPolicy: Always
+      {{- with .Values.search_engine_app.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "..serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - env:
-            - name: HOST_IP
-              valueFrom:
-                configMapKeyRef:
-                  key: HOST_IP
-                  name: {{ include "..fullname" . }}-config
-            - name: ELASTICSEARCH_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  key: ELASTICSEARCH_HOSTNAME
-                  name: {{ include "..fullname" . }}-config
-            - name: ELASTICSEARCH_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: ELASTICSEARCH_PORT
-                  name: {{ include "..fullname" . }}-config
-            - name: ELASTICSEARCH_USERNAME
-              valueFrom:
-                configMapKeyRef:
-                  key: ELASTICSEARCH_USERNAME
-                  name: {{ include "..fullname" . }}-config
-            - name: ELASTICSEARCH_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  key: ELASTICSEARCH_PASSWORD
-                  name: {{ include "..fullname" . }}-config
-            - name: POSTGRES_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_HOSTNAME
-                  name: {{ include "..fullname" . }}-config
-            - name: POSTGRES_PORT
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_PORT
-                  name: {{ include "..fullname" . }}-config
-            - name: POSTGRES_USER
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_USER
-                  name: {{ include "..fullname" . }}-config
-            - name: POSTGRES_DB
-              valueFrom:
-                configMapKeyRef:
-                  key: POSTGRES_DB
-                  name: {{ include "..fullname" . }}-config
-
-
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.search_engine_app.image.repository }}:{{ .Values.search_engine_app.image.tag | default .Chart.AppVersion }}"
-          name: {{ .Chart.Name }}-search_engine_app
+          imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
-
-      {{- with .Values.search_engine_app.nodeSelector }}
+          livenessProbe:
+            httpGet:
+              path: "{{ .Values.search_engine_app.service.test_path }}"
+              port: http
+          readinessProbe:
+            httpGet:
+              path: "{{ .Values.search_engine_app.service.test_path }}"
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.search_engine_app.affinity }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.search_engine_app.tolerations }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

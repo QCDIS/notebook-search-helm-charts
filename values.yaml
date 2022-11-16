@@ -50,6 +50,8 @@ search_engine_app:
   service:
     type: ClusterIP
     port: 7777
+    test_path: /
+
 
   ingress:
     enabled: false
