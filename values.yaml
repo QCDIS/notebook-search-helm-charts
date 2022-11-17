@@ -7,6 +7,10 @@ postgresql:
     database: notebooksearch_db
     password: notebooksearch2022
 
+elasticsearch:
+  image:
+    tag: 7.17.7
+
 search_engine_app:
   replicaCount: 1
 
