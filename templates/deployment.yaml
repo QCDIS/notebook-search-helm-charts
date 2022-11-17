@@ -103,9 +103,6 @@ spec:
 #                secretKeyRef:
 #                  name: {{ .Release.Name }}-postgresql
 #                  key: password
-          args:
-            - sh
-            - tail -f /dev/null
 
 
       {{- with .Values.search_engine_app.nodeSelector }}
