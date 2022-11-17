@@ -37,14 +37,14 @@ spec:
             - name: http
               containerPort: {{ .Values.search_engine_app.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.search_engine_app.service.test_path }}
-              port: {{ .Values.search_engine_app.service.port }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.search_engine_app.service.test_path }}
-              port: {{ .Values.search_engine_app.service.port }}
+#          livenessProbe:
+#            httpGet:
+#              path: {{ .Values.search_engine_app.service.test_path }}
+#              port: {{ .Values.search_engine_app.service.port }}
+#          readinessProbe:
+#            httpGet:
+#              path: {{ .Values.search_engine_app.service.test_path }}
+#              port: {{ .Values.search_engine_app.service.port }}
           resources:
             {{- toYaml .Values.search_engine_app.resources | nindent 12 }}
           env:
@@ -103,6 +103,9 @@ spec:
 #                secretKeyRef:
 #                  name: {{ .Release.Name }}-postgresql
 #                  key: password
+          args:
+            - sh
+            - tail -f /dev/null
 
 
       {{- with .Values.search_engine_app.nodeSelector }}
