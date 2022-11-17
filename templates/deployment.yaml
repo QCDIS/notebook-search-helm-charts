@@ -93,16 +93,16 @@ spec:
                 configMapKeyRef:
                   name: {{ include "..fullname" . }}-config
                   key: POSTGRES_DB
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "..fullname" . }}-config
-                  key: POSTGRES_PASSWORD
 #            - name: POSTGRES_PASSWORD
 #              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Release.Name }}-postgresql
-#                  key: password
+#                configMapKeyRef:
+#                  name: {{ include "..fullname" . }}-config
+#                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: password
 
 
       {{- with .Values.search_engine_app.nodeSelector }}

@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 postgresql:
   auth:
-    username: notebooksearch
-    database: notebooksearch
+    username: notebooksearch_user
+    database: notebooksearch_db
     password: notebooksearch2022
 
 search_engine_app:
