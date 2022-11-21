@@ -1,28 +1,28 @@
-{{- if .Values.search_engine_app.autoscaling.enabled }}
+{{- if .Values.autoscaling.enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "..fullname" . }}
+  name: {{ include "deleteme.fullname" . }}
   labels:
-    {{- include "..labels" . | nindent 4 }}
+    {{- include "deleteme.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "..fullname" . }}
-  minReplicas: {{ .Values.search_engine_app.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.search_engine_app.autoscaling.maxReplicas }}
+    name: {{ include "deleteme.fullname" . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.search_engine_app.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.search_engine_app.autoscaling.targetCPUUtilizationPercentage }}
+        targetAverageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.search_engine_app.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.search_engine_app.autoscaling.targetMemoryUtilizationPercentage }}
+        targetAverageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}
