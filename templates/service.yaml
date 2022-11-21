@@ -8,7 +8,7 @@ spec:
   type: {{ .Values.search_engine_app.service.type }}
   ports:
     - port: {{ .Values.search_engine_app.service.port }}
-      targetPort: http
+      targetPort: 7777
       protocol: TCP
       name: http
   selector:
