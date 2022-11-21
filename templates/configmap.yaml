@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "notebook-search-app.fullname" . }}-config
   labels:
-    {{- include "..labels" . | nindent 4 }}
+    {{- include "notebook-search-app.labels" . | nindent 4 }}
 
 data:
   HOST_IP : "127.0.0.0"
