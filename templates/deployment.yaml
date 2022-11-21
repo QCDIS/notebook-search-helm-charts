@@ -103,36 +103,65 @@ spec:
 #                secretKeyRef:
 #                  name: {{ .Release.Name }}-postgresql
 #                  key: password
+
       initContainers:
-      - name: init-myservice
-        image: busybox:1.28
-        command: ['sh', '-c', "echo indexing in $ELASTICSEARCH_HOSTNAME"]
-        env:
-          - name: HOST_IP
-            valueFrom:
-              configMapKeyRef:
-                name: { { include "..fullname" . } }-config
-                key: HOST_IP
-          - name: ELASTICSEARCH_HOSTNAME
-            valueFrom:
-              configMapKeyRef:
-                name: { { include "..fullname" . } }-config
-                key: ELASTICSEARCH_HOSTNAME
-          - name: ELASTICSEARCH_PORT
-            valueFrom:
-              configMapKeyRef:
-                name: { { include "..fullname" . } }-config
-                key: ELASTICSEARCH_PORT
-          - name: ELASTICSEARCH_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: { { include "..fullname" . } }-config
-                key: ELASTICSEARCH_USERNAME
-          - name: ELASTICSEARCH_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: { { include "..fullname" . } }-config
-                key: ELASTICSEARCH_PASSWORD
+        - name: {{ .Chart.Name }}-index
+          securityContext:
+            {{- toYaml .Values.search_engine_app.securityContext | nindent 12 }}
+          image: busybox:1.28
+          command: ['sh', '-c', "echo indexing...."]
+          imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: HOST_IP
+            - name: ELASTICSEARCH_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_HOSTNAME
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_PORT
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_USERNAME
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: ELASTICSEARCH_PASSWORD
+            - name: POSTGRES_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_HOSTNAME
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_PORT
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "..fullname" . }}-config
+                  key: POSTGRES_PASSWORD
 
       {{- with .Values.search_engine_app.nodeSelector }}
       nodeSelector:
