@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.search_engine_app.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.search_engine_app.service.port }}
+              containerPort: 7777
               protocol: TCP
 #          livenessProbe:
 #            httpGet:
