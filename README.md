@@ -1,1 +1,1 @@
-# notebook-search-helm-charts
+# notebook-search-app

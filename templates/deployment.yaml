@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "deleteme.fullname" . }}
+  name: {{ include "notebook-search-app.fullname" . }}
   labels:
-    {{- include "deleteme.labels" . | nindent 4 }}
+    {{- include "notebook-search-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "deleteme.selectorLabels" . | nindent 6 }}
+      {{- include "notebook-search-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "deleteme.selectorLabels" . | nindent 8 }}
+        {{- include "notebook-search-app.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "deleteme.serviceAccountName" . }}
+      serviceAccountName: {{ include "notebook-search-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

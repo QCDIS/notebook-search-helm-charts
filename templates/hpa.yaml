@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "deleteme.fullname" . }}
+  name: {{ include "notebook-search-app.fullname" . }}
   labels:
-    {{- include "deleteme.labels" . | nindent 4 }}
+    {{- include "notebook-search-app.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "deleteme.fullname" . }}
+    name: {{ include "notebook-search-app.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
