@@ -18,7 +18,7 @@ search_engine_app:
     repository: qcdis/search-engine-app
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "v0.2"
+    tag: "v0.3"
 
   environment:
 
@@ -64,7 +64,7 @@ search_engine_app:
     hosts:
       - host: chart-example.local
         paths:
-          - path: /
+          - path: /search_app
             pathType: ImplementationSpecific
     tls: []
     #  - secretName: chart-example-tls
