@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "notebook-search-app.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "notebook-search-app.fullname" . }}:{{ .Values.notebook_search_app.service.port }}']
   restartPolicy: Never

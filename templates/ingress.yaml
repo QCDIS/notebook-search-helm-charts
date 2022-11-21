@@ -1,9 +1,9 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.notebook_search_app.ingress.enabled -}}
 {{- $fullName := include "notebook-search-app.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
-{{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
+{{- $svcPort := .Values.notebook_search_app.service.port -}}
+{{- if and .Values.notebook_search_app.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.notebook_search_app.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.notebook_search_app.ingress.annotations "kubernetes.io/ingress.class" .Values.notebook_search_app.ingress.className}}
   {{- end }}
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -18,17 +18,17 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "notebook-search-app.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- with .Values.notebook_search_app.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.ingress.className }}
+  {{- if and .Values.notebook_search_app.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.notebook_search_app.ingress.className }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
+  {{- if .Values.notebook_search_app.ingress.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
+    {{- range .Values.notebook_search_app.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -37,7 +37,7 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
+    {{- range .Values.notebook_search_app.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:

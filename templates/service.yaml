@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "notebook-search-app.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.notebook_search_app.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.notebook_search_app.service.port }}
       targetPort: http
       protocol: TCP
       name: http

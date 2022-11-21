@@ -54,9 +54,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "notebook-search-app.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "notebook-search-app.fullname" .) .Values.serviceAccount.name }}
+{{- if .Values.notebook_search_app.serviceAccount.create }}
+{{- default (include "notebook-search-app.fullname" .) .Values.notebook_search_app.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default "default" .Values.notebook_search_app.serviceAccount.name }}
 {{- end }}
 {{- end }}

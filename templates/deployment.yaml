@@ -5,34 +5,86 @@ metadata:
   labels:
     {{- include "notebook-search-app.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.notebook_search_app.autoscaling.enabled }}
+  replicas: {{ .Values.notebook_search_app.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
       {{- include "notebook-search-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- with .Values.notebook_search_app.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "notebook-search-app.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.notebook_search_app.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "notebook-search-app.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.notebook_search_app.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+            {{- toYaml .Values.notebook_search_app.securityContext | nindent 12 }}
+          image: "{{ .Values.notebook_search_app.image.repository }}:{{ .Values.notebook_search_app.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.notebook_search_app.image.pullPolicy }}
+          env:
+            - name: HOST_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: HOST_IP
+            - name: ELASTICSEARCH_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: ELASTICSEARCH_HOSTNAME
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: ELASTICSEARCH_PORT
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: ELASTICSEARCH_USERNAME
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: ELASTICSEARCH_PASSWORD
+            - name: POSTGRES_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: POSTGRES_HOSTNAME
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: POSTGRES_PORT
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "notebook-search-app.fullname" . }}-config
+                  key: POSTGRES_PASSWORD
+
           ports:
             - name: http
               containerPort: 7777
@@ -46,16 +98,17 @@ spec:
               path: /
               port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .Values.notebook_search_app.resources | nindent 12 }}
+
+      {{- with .Values.notebook_search_app.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.notebook_search_app.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.notebook_search_app.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
